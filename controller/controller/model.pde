@@ -1,82 +1,89 @@
-interface Displayable {
-  void display();
-}
-
-interface Rotable {
-  void doRotation();
-}
-
-interface Translatable {
-  void doTranslation();
-}
-
-abstract class CelestialBody implements Rotable, Translatable, Displayable {
+abstract class CelestialBody {
   private Position position;
-  private Dimension dimension;
-  private Rotation rotation;
-  private Translation translation;
+  private float diameter;
+  private float rotationAngle = 0;
+  private float translationAngle = 0;
+  private float rotationFrequency;
+  private float translationFrequency;
+  private float axisTilt;
 
-  public CelestialBody(Position position, Dimension dimension, Rotation rotation, Translation translation) {
+  // Non-translatable celestial bodies
+  public CelestialBody(Position position, float diameter, float rotationFrequency, float axisTilt) {
     this.position = position;
-    this.dimension = dimension;
-    this.rotation = rotation;
-    this.translation = translation;
+    this.diameter = diameter;
+    this.rotationFrequency = rotationFrequency;
+    this.axisTilt = axisTilt;
+  }
+
+  // Translatable celest bodies
+  public CelestialBody(Position position, float diameter, float rotationFrequency, float translationFrequency, float axisTilt) {
+    this.position = position;
+    this.diameter = diameter;
+    this.rotationFrequency = rotationFrequency;
+    this.translationFrequency = translationFrequency;
+    this.axisTilt = axisTilt;
   }
 }
 
 class Star extends CelestialBody {
-  private ArrayList<Planet> children = new ArrayList<Planet>();
+  ArrayList<Planet> planets = new ArrayList<Planet>();
 
-  public Star(Position position, Dimension dimension, Rotation rotation, Translation translation) {
-    super(position, dimension, rotation, translation);
+  public Star(Position position, float diameter, float rotationFrequency, float axisTilt) {
+    super(position, diameter, rotationFrequency, axisTilt);
   }
 
   void display() {
+    // Display the star
     beginShape();
-    PShape body = createShape(SPHERE, super.dimension.getWidth());
+    PShape star = createShape(SPHERE, super.diameter);
     endShape();
-    pushMatrix();
-    translate(super.position.getX(), super.position.getY());
-    rotateY(super.rotation.getY());
-    shape(body);
-    popMatrix();
+    rotateY(radians(super.rotationAngle));
+    super.rotationAngle = (super.rotationAngle + super.rotationFrequency) % 360;
+    shape(star);
+
+    // Display the star´s planets
+    for (Planet planet : planets) {
+      planet.display(this);
+    }
   }
 
-  void doRotation() {
-  }
-
-  void doTranslation() {
+  float getDiameter() {
+    return super.diameter;
   }
 }
 
 class Planet extends CelestialBody {
-  private ArrayList<Satellite> children = new ArrayList<Satellite>();
+  ArrayList<Satellite> children = new ArrayList<Satellite>();
+  float distanceToStar;
 
-  public Planet(Position position, Dimension dimension, Rotation rotation, Translation translation) {
-    super(position, dimension, rotation, translation);
+  public Planet(Position position, float diameter, float rotationFrequency, float translationFrequency, float axisTilt, float distanceToStar) {
+    super(position, diameter, rotationFrequency, translationFrequency, axisTilt);
+    this.distanceToStar = distanceToStar;
   }
 
-  void display() {
-  }
-
-  void doRotation() {
-  }
-
-  void doTranslation() {
+  void display(Star parent) {
+    pushMatrix();
+    beginShape();
+    PShape planet = createShape(SPHERE, super.diameter);
+    endShape();
+    float distance = distanceToStar + parent.getDiameter() + super.diameter/2;
+    translate(distance * cos(radians(super.translationAngle)), 0, distance * sin(radians(super.translationAngle)));
+    rotateY(radians(super.rotationAngle));
+    super.rotationAngle = (super.rotationAngle + super.rotationFrequency) % 360;
+    super.translationAngle = (super.translationAngle + super.translationFrequency) % 360;
+    shape(planet);
+    popMatrix();
   }
 }
 
 class Satellite extends CelestialBody {
-  public Satellite(Position position, Dimension dimension, Rotation rotation, Translation translation) {
-    super(position, dimension, rotation, translation);
+  float distanceToPlanet;
+
+  public Satellite(Position position, float diameter, float rotationFrequency, float translationFrequency, float axisTilt, float distanceToPlanet) {
+    super(position, diameter, rotationFrequency, translationFrequency, axisTilt);
+    this.distanceToPlanet = distanceToPlanet;
   }
 
   void display() {
-  }
-
-  void doRotation() {
-  }
-
-  void doTranslation() {
   }
 }
