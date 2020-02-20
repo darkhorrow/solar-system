@@ -5,30 +5,27 @@ abstract class CelestialBody {
   private float translationAngle = 0;
   private float rotationFrequency;
   private float translationFrequency;
-  private float axisTilt;
 
   // Non-translatable celestial bodies
-  public CelestialBody(float diameter, float rotationFrequency, float axisTilt) {
+  public CelestialBody(float diameter, float rotationFrequency) {
     this.diameter = diameter;
     this.rotationFrequency = rotationFrequency;
-    this.axisTilt = axisTilt;
   }
 
   // Translatable celest bodies
-  public CelestialBody(float initialAngle, float diameter, float rotationFrequency, float translationFrequency, float axisTilt) {
+  public CelestialBody(float initialAngle, float diameter, float rotationFrequency, float translationFrequency) {
     translationAngle = initialAngle % 360;
     this.diameter = diameter;
     this.rotationFrequency = rotationFrequency;
     this.translationFrequency = translationFrequency;
-    this.axisTilt = axisTilt;
   }
 }
 
 class Star extends CelestialBody {
   ArrayList<Planet> planets = new ArrayList<Planet>();
 
-  public Star(float diameter, float rotationFrequency, float axisTilt) {
-    super(diameter, rotationFrequency, axisTilt);
+  public Star(float diameter, float rotationFrequency) {
+    super(diameter, rotationFrequency);
   }
 
   void display() {
@@ -55,8 +52,8 @@ class Planet extends CelestialBody {
   ArrayList<Satellite> children = new ArrayList<Satellite>();
   float distanceToStar;
 
-  public Planet(float initialAngle, float diameter, float rotationFrequency, float translationFrequency, float axisTilt, float distanceToStar) {
-    super(initialAngle, diameter, rotationFrequency, translationFrequency, axisTilt);
+  public Planet(float initialAngle, float diameter, float rotationFrequency, float translationFrequency, float distanceToStar) {
+    super(initialAngle, diameter, rotationFrequency, translationFrequency);
     this.distanceToStar = distanceToStar;
   }
 
@@ -78,8 +75,8 @@ class Planet extends CelestialBody {
 class Satellite extends CelestialBody {
   float distanceToPlanet;
 
-  public Satellite(float initialAngle, float diameter, float rotationFrequency, float translationFrequency, float axisTilt, float distanceToPlanet) {
-    super(initialAngle, diameter, rotationFrequency, translationFrequency, axisTilt);
+  public Satellite(float initialAngle, float diameter, float rotationFrequency, float translationFrequency, float distanceToPlanet) {
+    super(initialAngle, diameter, rotationFrequency, translationFrequency);
     this.distanceToPlanet = distanceToPlanet;
   }
 
