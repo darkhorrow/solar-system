@@ -32,6 +32,7 @@ class Star extends CelestialBody {
 
   void display() {
     // Display the star
+    pushMatrix();
     beginShape();
     PShape star = createShape(SPHERE, super.diameter);
     endShape();
@@ -39,11 +40,22 @@ class Star extends CelestialBody {
     super.rotationAngle = (super.rotationAngle + super.rotationFrequency) % 360;
     star.setTexture(super.texture);
     shape(star);
-
+    popMatrix();
+    
     // Display the star´s planets
     for (Planet planet : planets) {
       planet.display(this);
     }
+    
+    
+    // Text
+    pushMatrix();
+    fill(255);
+    rotateY(-PI/2 - 100);
+    textSize(50);
+    textAlign(CENTER, CENTER);
+    text("Star", 0, -super.diameter - 50);
+    popMatrix();
   }
 
   float getDiameter() {
@@ -71,15 +83,22 @@ class Planet extends CelestialBody {
     super.rotationAngle = (super.rotationAngle + super.rotationFrequency) % 360;
     super.translationAngle = (super.translationAngle + super.translationFrequency) % 360;
     planet.setTexture(super.texture);
-    shape(planet);
-    
+    shape(planet);   
+
     // Display the planet´s satellites
     for (Satellite satellite : satellites) {
       satellite.display(this);
     }
+
+    fill(255);
+    textSize(20);
+    textAlign(CENTER, CENTER);
+    rotateY(-radians(super.rotationAngle) - PI/2 - 100);
+    text("Planet", 0, -super.diameter - 50);
+    
     popMatrix();
   }
-  
+
   float getDiameter() {
     return super.diameter;
   }
@@ -105,6 +124,15 @@ class Satellite extends CelestialBody {
     super.translationAngle = (super.translationAngle + super.translationFrequency) % 360;
     satellite.setTexture(super.texture);
     shape(satellite);
+
+    pushMatrix();
+    fill(255);
+    rotateY(- 2 * radians(super.rotationAngle) - PI/2 - 100);
+    textSize(10);
+    textAlign(CENTER, CENTER);
+    text("Satellite", 0, -super.diameter - 20);
+    popMatrix();
+
     popMatrix();
   }
 }
