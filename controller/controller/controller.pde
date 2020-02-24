@@ -13,12 +13,15 @@ void setup() {
   MX = width/2;
   MY = height/2;
   star = new Star(100, 0.25, "data/sun.jpg");
-  Planet pl1 = new Planet(200, 40, 0.5, 1, 100, "data/planet2.jpg");
-  pl1.satellites.add(new Satellite(0, 5, 0.5, 3, 10, "data/satellite1.jpg"));
-  star.planets.add(pl1);
+  Planet pl2 = new Planet(200, 40, 0.5, 1, 100, "data/planet2.jpg");
+  pl2.satellites.add(new Satellite(0, 5, 0.5, 3, 10, "data/satellite1.jpg"));
+  star.planets.add(pl2);
   star.planets.add(new Planet(45, 30, 0.5, 0.5, 200, "data/planet4.jpg"));
   star.planets.add(new Planet(90, 20, 0.5, 1, 300, "data/planet3.jpg"));
-  star.planets.add(new Planet(0, 50, 0.5, 1, 400, "data/planet1.jpg"));
+  Planet pl1 = new Planet(0, 50, 0.5, 1, 400, "data/planet1.jpg");
+  pl1.satellites.add(new Satellite(0, 5, 0.5, 3, 10, "data/satellite1.jpg"));
+  pl1.satellites.add(new Satellite(60, 5, 0.5, 5, 30, "data/satellite1.jpg"));
+  star.planets.add(pl1);
   star.planets.add(new Planet(10, 40, 0.5, 0.5, 500, "data/planet5.jpg"));
 }
 
